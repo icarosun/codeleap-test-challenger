@@ -2,15 +2,17 @@ import { useMemo } from "react";
 import { useState } from "react";
 import { useDispatch } from "react-redux";
 import { v4 } from "uuid";
-import { addPost, deletePost, updatePost } from "../../actions/posts";
 import { Modal, ModalProps } from "../../components/Modal";
 import { PostCard } from "../../components/PostCard";
 import { PostForm } from "../../components/PostForm";
 import { useAppDispatch, useAppSelector } from "../../hooks/redux";
+import { addOnePost, removeOnePost, updateOnePost } from "../../redux/slices/posts.slice";
 import { Post } from "../../types";
 import "./style.css";
+
 export const PostsPage: React.FC = () => {
-  const username = useAppSelector((store) => store.username);
+  const username = useAppSelector(state => state.username.name);
+  console.log(username);
   const [postFormValues, setPostFormValues] = useState({
     title: "",
     content: "",
@@ -20,7 +22,7 @@ export const PostsPage: React.FC = () => {
   function handleSubmit(e: React.FormEvent<HTMLFormElement>) {
     e.preventDefault();
     dispatch(
-      addPost({
+      addOnePost({
         ...postFormValues,
         author: username,
         createdAt: Date.now(),
@@ -60,7 +62,7 @@ const initialModalState: ModalState = {
   selectedPost: null,
 };
 export const Feed: React.FC<{ currentUser: string }> = ({ currentUser }) => {
-  const { posts } = useAppSelector((store) => store);
+  const { posts }  = useAppSelector((store) => store.posts);
   const orderedPosts = useMemo(() => posts.sort((a, b) => b.createdAt - a.createdAt), [posts]);
   const [modalState, setModalState] = useState<ModalState>(initialModalState);
   const partialSetModal = (newState: Partial<ModalState>) => setModalState({ ...modalState, ...newState });
@@ -85,7 +87,7 @@ export const Feed: React.FC<{ currentUser: string }> = ({ currentUser }) => {
             state={modalState.selectedPost}
             onSubmit={(e: React.FormEvent<HTMLFormElement>) => {
               e.preventDefault();
-              dispatch(updatePost({ ...modalState.selectedPost, updatedAt: Date.now() }));
+              dispatch(updateOnePost({ ...modalState.selectedPost, updatedAt: Date.now() }));
               setModalState(initialModalState);
             }}
             setState={(to) => partialSetModal({ selectedPost: { ...modalState.selectedPost, ...to } })}
@@ -103,7 +105,7 @@ export const Feed: React.FC<{ currentUser: string }> = ({ currentUser }) => {
             const res = window.confirm("Are you sure you want to delete this item?");
 
             if (res) {
-              dispatch(deletePost(p));
+              dispatch(removeOnePost(p));
             }
           }}
           onEdit={handleEdit}
