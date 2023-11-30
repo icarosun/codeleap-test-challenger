@@ -6,18 +6,6 @@ import { useAppDispatch, useAppSelector } from "./hooks/redux";
 import { LoginPage, PostsPage } from "./pages";
 
 const App: React.FC = () => {
-  const { posts } = useAppSelector((store) => store);
-  const dispatch = useAppDispatch();
-
-  useEffect(() => {
-    dispatch(loadPosts());
-  }, [dispatch]);
-
-  useEffect(() => {
-    if (posts.length > 0) {
-      localStorage.setItem(POSTS_LOCALSTORAGE_KEY, JSON.stringify(posts));
-    }
-  }, [posts]);
   return (
     <div className="App">
       <BrowserRouter>
