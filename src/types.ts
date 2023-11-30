@@ -8,6 +8,11 @@ export interface Post {
   updatedAt: number;
   author: string;
 }
+
+export interface User {
+  name: string;
+}
+
 type ActionWithPayload = AnyAction & { payload?: unknown };
 
 export type AppAction<T extends ActionWithPayload> = { type: T["type"]; payload?: T["payload"] };
