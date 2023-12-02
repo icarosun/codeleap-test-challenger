@@ -21,8 +21,10 @@ const postsSlice = createSlice({
       state.posts = state.posts.filter((post) => post.id !== action.payload.id);
     },
     updateOnePost(state, action: PayloadAction<Post>) {
-      state.posts[action.payload.id] = {
-        ...state.posts[action.payload.id],
+      const index = state.posts.findIndex(({id}) => id === action.payload.id);
+
+      state.posts[index] = {
+        ...state.posts[index],
         ...action.payload,
       }
     }
