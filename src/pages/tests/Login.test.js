@@ -23,11 +23,12 @@ describe("Login Page", () => {
 
     const input = screen.getByLabelText(/Please enter your username/)
 
-    await waitFor(() => {
-      userEvent.type(input, "John Doe");
-    });
+    userEvent.type(input, "John Doe");
 
     const enterButton = screen.getByRole("button");
-    expect(enterButton).not.toBeDisabled();
+
+    await waitFor(() => {
+      expect(enterButton).not.toBeDisabled();
+    })
   });
 });
