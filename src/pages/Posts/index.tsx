@@ -12,7 +12,6 @@ import "./style.css";
 
 export const PostsPage: React.FC = () => {
   const username = useAppSelector(state => state.username.name);
-  console.log(username);
   const [postFormValues, setPostFormValues] = useState({
     title: "",
     content: "",
@@ -63,7 +62,7 @@ const initialModalState: ModalState = {
 };
 export const Feed: React.FC<{ currentUser: string }> = ({ currentUser }) => {
   const { posts }  = useAppSelector((store) => store.posts);
-  const orderedPosts = useMemo(() => posts.sort((a, b) => b.createdAt - a.createdAt), [posts]);
+  const orderedPosts = useMemo(() => posts?.sort((a, b) => b.createdAt - a.createdAt), [posts]);
   const [modalState, setModalState] = useState<ModalState>(initialModalState);
   const partialSetModal = (newState: Partial<ModalState>) => setModalState({ ...modalState, ...newState });
   const toggleModal = () => partialSetModal({ open: !modalState.open });
@@ -97,7 +96,7 @@ export const Feed: React.FC<{ currentUser: string }> = ({ currentUser }) => {
           />
         )}
       </Modal>
-      {orderedPosts.map((post) => (
+      {orderedPosts?.map((post) => (
         <PostCard
           key={post.id}
           allowEdit={post.author === currentUser}

@@ -1,16 +1,33 @@
 import React from "react";
-import { screen, render } from "@testing-library/react";
+import { debug, screen, render, waitFor } from "@testing-library/react";
 import { LoginPage } from "../Login";
+import { renderWithProviders } from "../../utils/test-utils";
+import '@testing-library/jest-dom'
+import userEvent from "@testing-library/user-event";
 
 describe("Login Page", () => {
   it("render the Login Page", () => {
-    render(<LoginPage />);
+    renderWithProviders(<LoginPage />);
 
     expect(screen.getByRole("heading")).toHaveTextContent(/Welcome to CodeLeap network!/);
+    expect(screen.getByLabelText("Please enter your username")).toBeInTheDocument();
 
-    expect(screen.getByRole("input")).toBeInTheDocument();
+    expect(screen.getByLabelText(/Please enter your username/)).toBeInTheDocument();
 
-    const enterButton = screen.getByTitle("button", { name: "Enter"});
+    const enterButton = screen.getByRole("button");
     expect(enterButton).toBeDisabled();
-  })
+  });
+
+  it("button should be visible when the input has a value different empty", async () => {
+    renderWithProviders(<LoginPage />)
+
+    const input = screen.getByLabelText(/Please enter your username/)
+
+    await waitFor(() => {
+      userEvent.type(input, "John Doe");
+    });
+
+    const enterButton = screen.getByRole("button");
+    expect(enterButton).not.toBeDisabled();
+  });
 });

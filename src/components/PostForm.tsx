@@ -17,7 +17,7 @@ type PostFormProps = {
 
 export const PostForm: React.FC<PostFormProps> = ({ state, setState, onSubmit, labels }) => {
   const invalidFields = !state.content || !state.title;
-  const username = useAppSelector((store) => store.username);
+  const username = useAppSelector((store) => store.username.name);
 
   if (username) {
     return (

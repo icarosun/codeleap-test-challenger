@@ -62,14 +62,14 @@ export const Modal: React.FC<ModalProps> = (props) => {
   useEffect(() => {
     const currentId = modalId.current;
     const appRoot = document.getElementById("root");
-    appRoot.addEventListener("focusin", (e) => focusModal(e, currentId));
-    return () => appRoot.removeEventListener("focusin", (e) => focusModal(e, currentId));
+    appRoot?.addEventListener("focusin", (e) => focusModal(e, currentId));
+    return () => appRoot?.removeEventListener("focusin", (e) => focusModal(e, currentId));
   }, []);
 
   useEffect(() => {
     const appRoot = document.getElementById("root");
-    appRoot.setAttribute("aria-hidden", `${props.open}`);
-    appRoot.setAttribute("tabindex", `${-1}`);
+    appRoot?.setAttribute("aria-hidden", `${props.open}`);
+    appRoot?.setAttribute("tabindex", `${-1}`);
   }, [props.open]);
 
   if (props.open) {
