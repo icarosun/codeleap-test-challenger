@@ -5,7 +5,7 @@ export interface Post {
   title: string;
   content: string;
   createdAt: number;
-  updatedAt: number;
+  updatedAt?: number;
   author: string;
 }
 

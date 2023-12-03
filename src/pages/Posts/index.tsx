@@ -62,7 +62,7 @@ const initialModalState: ModalState = {
 };
 export const Feed: React.FC<{ currentUser: string }> = ({ currentUser }) => {
   const { posts }  = useAppSelector((store) => store.posts);
-  const orderedPosts = useMemo(() => posts?.sort((a, b) => b.createdAt - a.createdAt), [posts]);
+  const orderedPosts = useMemo(() => posts?.slice().sort((a, b) => a.createdAt > b.createdAt ? 1 : -1), [posts]);
   const [modalState, setModalState] = useState<ModalState>(initialModalState);
   const partialSetModal = (newState: Partial<ModalState>) => setModalState({ ...modalState, ...newState });
   const toggleModal = () => partialSetModal({ open: !modalState.open });
